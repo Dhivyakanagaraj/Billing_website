@@ -19,3 +19,17 @@ exports.getBills = async (req, res) => {
     res.status(500).json({ message: 'Failed to retrieve bills', error: error.message });
   }
 };
+
+exports.deleteBill = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deletedBill = await Bill.findByIdAndDelete(id);
+    if (!deletedBill) {
+      return res.status(404).json({ message: 'Bill not found' });
+    }
+    res.status(200).json({ message: 'Bill deleted successfully' });
+  } catch (error) {
+    console.error('Delete Error:', error);
+    res.status(500).json({ message: 'Server error while deleting bill' });
+  }
+};
